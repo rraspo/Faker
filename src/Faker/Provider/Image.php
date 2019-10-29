@@ -30,28 +30,29 @@ class Image extends Base
      */
     public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false)
     {
-        $baseUrl = "https://lorempixel.com/";
-        $url = "{$width}/{$height}/";
+        $baseUrl = "https://meme-api.herokuapp.com/gimme";
+        if (function_exists('curl_exec')) {
+            $options = array(
+                CURLOPT_RETURNTRANSFER => true,   // return web page
+                CURLOPT_HEADER         => false,  // don't return headers
+                CURLOPT_FOLLOWLOCATION => true,   // follow redirects
+                CURLOPT_MAXREDIRS      => 10,     // stop after 10 redirects
+                CURLOPT_ENCODING       => "",     // handle compressed
+                CURLOPT_USERAGENT      => "test", // name of client
+                CURLOPT_AUTOREFERER    => true,   // set referrer on redirect
+                CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
+                CURLOPT_TIMEOUT        => 120,    // time-out on response
+            ); 
+            $ch = curl_init($baseUrl);
+            curl_setopt_array($ch, $options);
+        
+            $content  = json_decode(curl_exec($ch));
 
-        if ($gray) {
-            $url = "gray/" . $url;
+            curl_close($ch);
+        
+            return $content->url;
         }
-
-        if ($category) {
-            if (!in_array($category, static::$categories)) {
-                throw new \InvalidArgumentException(sprintf('Unknown image category "%s"', $category));
-            }
-            $url .= "{$category}/";
-            if ($word) {
-                $url .= "{$word}/";
-            }
-        }
-
-        if ($randomize) {
-            $url .= '?' . static::randomNumber(5, true);
-        }
-
-        return $baseUrl . $url;
+        return "";
     }
 
     /**
