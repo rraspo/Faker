@@ -1,12 +1,12 @@
 {
-    "name": "fzaninotto/faker",
+    "name": "rraspo/faker",
     "type": "library",
-    "description": "Faker is a PHP library that generates fake data for you.",
+    "description": "Faker is a PHP library that generates fake data for you. Forked from François Zaninotto's Faker.",
     "keywords": ["faker", "fixtures", "data"],
     "license": "MIT",
     "authors": [
         {
-            "name": "François Zaninotto"
+            "name": "Juan Porras"
         }
     ],
     "require": {
